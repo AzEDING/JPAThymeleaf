@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="kr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="text/html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Board Page</title>
+</head>
+<body>
+<h1>게시물 수정</h1>
+<form th:action="@{/v1/board/} + ${board.boardId} + @{/update}" th:object="${boardUpdateDto}" th:method="post">
+  <p>제목 : <input type="text" th:placeholder="${board.bTitle}" th:field="*{bTitle}"/></p>
+  <p>내용 : <input type="text" th:placeholder="${board.bContent}" th:field="*{bContent}"/></p>
+  <p><input type="submit" value="수정"/> <button type="button" th:onclick="|location.href='/v1/board/${board.boardId}'|">취소</button> </p>
+</form>
+</body>
+</html>
+
+<!--"@{/v1/board(boardId=${board.boardId})/update}"-->
+<!--"@{/v1/board/} + ${board.boardId} + @{/update}"-->

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="text/html">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게시글 상세</title>
+</head>
+<body>
+<h2>게시글 상세</h2>
+<table class ="table table-bordered">
+  <thead>상세 조회</thead>
+  <tbody>
+  <tr>
+    <th>제목</th>
+    <td th:text="${board.bTitle}"></td>
+  </tr>
+  <tr>
+    <th>내용</th>
+    <td th:text="${board.bContent}"></td>
+  </tr>
+  <tr>
+    <th>작성자</th>
+    <td th:text="${board.userName}"></td>
+  </tr>
+  <tr>
+    <th>작성일</th>
+    <td th:text="${board.createDate}"></td>
+  </tr>
+  <tr>
+    <th>수정일</th>
+    <td th:text="${board.updateDate}"></td>
+  </tr>
+  </tbody>
+</table>
+<button th:if="${session.userId} == ${board.userId}" th:onclick="|location.href='/v1/board/${board.boardId}/update'|">수정</button>
+<form action="#" th:action="@{/v1/board/} + ${board.boardId} + @{/delete}" th:method="post">
+  <button th:if="${session.userId} == ${board.userId}">삭제</button>
+</form>
+<table>
+  <p>
+  <thead>댓글</thead>
+  <tbody>
+  <tr th:each="comment : ${board.comments}" class="tr">
+    <td th:text="${comment.cContent}" class="td"></td>
+    <td th:text="${comment.createDate}" class="td"></td>
+    <td th:text="${comment.updateDate}" class="td"></td>
+    <td th:text="${comment.user.name}" class="td"></td>
+    <td th:if="${session.isLogin == true}"><button th:onclick="|location.href='/v1/comment/${comment.commentId}/delete'|">삭제</button></td>
+  </tr>
+  </tbody>
+  </p>
+</table>
+<button th:onclick="location.href='/v1/home'">목록</button>
+
+<form th:if="${session.isLogin == true}" th:action="@{/v1/board/} + ${board.boardId} + @{/comment}" th:object="${comment}" th:method="post">
+  <p>댓글 : <input type="text" th:field="*{cContent}"/></p>
+  <p><input type="submit" value="등록"/> <button type="reset">취소</button> </p>
+</form>
+</body>
+</html>

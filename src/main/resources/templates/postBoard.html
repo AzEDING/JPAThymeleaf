@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="kr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="text/html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Board Page</title>
+</head>
+<body>
+<h1>게시물 등록</h1>
+<form action="#" th:action="@{/v1/board}" th:object="${boardReqDto}" th:method="post">
+    <p>제목 : <input type="text" th:field="*{bTitle}"/></p>
+    <p>내용 : <input type="text" th:field="*{bContent}"/></p>
+    <p><input type="submit" value="등록"/> <button type="button" th:onclick="location.href='/v1'">BACK</button> </p>
+</form>
+</body>
+</html>
