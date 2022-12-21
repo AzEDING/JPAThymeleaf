@@ -16,7 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/v1")
 public class UserController {
