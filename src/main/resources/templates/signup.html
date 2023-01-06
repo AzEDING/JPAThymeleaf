@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="text/html">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="#">
     <title>SIGNUP</title>
 </head>
 <body>
     <div class="container">
         <form th:method="post" th:action="@{/v1/signup}" th:object="${signupData}">
-            <input class="setEmail" required autocomplete="off" placeholder="email" th:field="*{email}">
-            <input class="setPassword" type="password" required autocomplete="off" placeholder="password" th:field="*{password}">
-            <input class="setName" required autocomplete="off" placeholder="name" th:field="*{name}">
-            <input class="setCellphone" required autocomplete="off" placeholder="010-0000-0000" th:field="*{cellphone}">
-            <input class="setGender" required autocomplete="off" placeholder="M or W" th:field="*{gender}">
+            <input type="email" required autocomplete="off" placeholder="email" th:field="*{email}">
+            <input type="password" required autocomplete="off" placeholder="password" th:field="*{password}">
+            <input required autocomplete="off" placeholder="name" th:field="*{name}">
+            <input required autocomplete="off" placeholder="010-0000-0000" th:field="*{cellphone}">
+            <input required autocomplete="off" placeholder="M or W" th:field="*{gender}">
             <button>DONE</button>
             <button th:onclick="location.href='/v1'">BACK</button>
         </form>

@@ -4,13 +4,11 @@ import com.setproject.domain.user.entity.dto.LoginReqDto;
 import com.setproject.domain.user.entity.dto.UserListResDto;
 import com.setproject.domain.user.entity.dto.UserReqDto;
 import com.setproject.domain.user.entity.dto.UserUpdateDto;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import lombok.RequiredArgsConstructor;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;

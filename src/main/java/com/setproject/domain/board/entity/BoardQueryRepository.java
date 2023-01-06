@@ -3,6 +3,8 @@ package com.setproject.domain.board.entity;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.setproject.domain.board.entity.dto.BoardResDto;
+import com.setproject.domain.board.entity.dto.CommentResDto;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -28,11 +30,10 @@ public class BoardQueryRepository {
 					board.bContent,
 					board.createDate,
 					board.updateDate,
-					user.name.as("userName")
+					board.user.userId,
+					board.user.name.as("userName")
 				))
 				.from(board)
-				.leftJoin(user)
-				.on(board.user.userId.eq(user.userId))
 				.where(board.isdel.eq(false))
 				.orderBy(board.createDate.desc())
 				.offset(pageable.getOffset())
@@ -42,8 +43,16 @@ public class BoardQueryRepository {
 		return new PageImpl<>(content, pageable, content.size());
 	}
 
-	public List<Comment> getComments(Long boardId) {
-		return jpaQueryFactory.selectFrom(comment)
+	public List<CommentResDto> getComments(Long boardId) {
+		return jpaQueryFactory.select(Projections.constructor(CommentResDto.class,
+				comment.commentId,
+				comment.cContent,
+				comment.createDate,
+				comment.updateDate,
+				comment.user.userId,
+				comment.user.name.as("userName")
+				))
+				.from(comment)
 				.where((comment.board.boardId.eq(boardId)).and(comment.isdel.eq(false)))
 				.orderBy(comment.createDate.asc())
 				.fetch();

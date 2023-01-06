@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="text/html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="#">
     <title>LOGIN</title>
 </head>
 <body>
     <div class="container">
         <form th:method="post" th:action="@{/v1/login}" th:object="${idPw}">
-            <input class="setEmail" required autocomplete="off" placeholder="email" th:field="*{email}">
-            <input class="setPassowrd" type="password" required autocomplete="off" placeholder="password" th:field="*{password}">
+            <input class="setEmail" required autocomplete="off" type="email" placeholder="email" th:field="*{email}">
+            <input class="setPassword" type="password" required autocomplete="off" placeholder="password" th:field="*{password}">
             <button>LOGIN</button>
             <button th:onclick="location.href='/v1/signup'">SIGNUP</button>
         </form>

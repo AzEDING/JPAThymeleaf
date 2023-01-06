@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="text/html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.2.js"></script>
+    <link rel="shortcut icon" href="#">
     <title>Update Board Page</title>
 </head>
 <body>
@@ -13,6 +15,37 @@
   <p>내용 : <input type="text" th:placeholder="${board.bContent}" th:field="*{bContent}"/></p>
   <p><input type="submit" value="수정"/> <button type="button" th:onclick="|location.href='/v1/board/${board.boardId}'|">취소</button> </p>
 </form>
+
+<!--<p> 제목 : <input type="text" th:placeholder="${board.bTitle}" class="title"/></p>-->
+<!--<p> 내용 : <input type="text" th:placeholder="${board.bContent}" class="content"/></p>-->
+<!--<p><button onclick="updateBoard()">수정</button> <button th:onclick="location.href='/v1/home'">뒤로</button> </p>-->
+
+<!--<script th:inline="javascript">-->
+<!--	function updateBoard() {-->
+<!--		var boardId = "${board.boardId}"-->
+<!--		const title = $(".title").val();-->
+<!--		const content = $(".content").val();-->
+<!--		-->
+<!--		const boardUpdateDto = {-->
+<!--			bTitle:title,-->
+<!--			bContent:content-->
+<!--		};-->
+<!--		-->
+<!--		$.ajax({-->
+<!--			url:"/v1/board/"+boardId,-->
+<!--			type:"POST",-->
+<!--			data:boardUpdateDto,-->
+<!--			success: ((res) => {-->
+<!--				location.href = "/v1/board/"+boardId-->
+<!--			}),-->
+<!--			error: ((err) => {-->
+<!--				console.log(err);-->
+<!--			})-->
+<!--		})-->
+<!--		-->
+<!--	-->
+<!--	}-->
+<!--</script>-->
 </body>
 </html>
 

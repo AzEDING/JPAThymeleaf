@@ -4,12 +4,14 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="text/html">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://code.jquery.com/jquery-3.6.2.js"></script>
+  <link rel="shortcut icon" href="#">
     <title>게시글 상세</title>
 </head>
 <body>
-<h2>게시글 상세</h2>
+<!-- <h2>게시글 상세</h2>
 <table class ="table table-bordered">
-  <thead>상세 조회</thead>
+  <thead>상세조회</thead>
   <tbody>
   <tr>
     <th>제목</th>
@@ -38,7 +40,6 @@
   <button th:if="${session.userId} == ${board.userId}">삭제</button>
 </form>
 <table>
-  <p>
   <thead>댓글</thead>
   <tbody>
   <tr th:each="comment : ${board.comments}" class="tr">
@@ -46,16 +47,134 @@
     <td th:text="${comment.createDate}" class="td"></td>
     <td th:text="${comment.updateDate}" class="td"></td>
     <td th:text="${comment.user.name}" class="td"></td>
-    <td th:if="${session.isLogin == true}"><button th:onclick="|location.href='/v1/comment/${comment.commentId}/delete'|">삭제</button></td>
+    <td th:if="${session.isLogin == true} and ${session.userId} == ${comment.user.userId}"><button th:onclick="|location.href='/v1/comment/${comment.commentId}/delete'|">삭제</button></td>
   </tr>
   </tbody>
-  </p>
 </table>
 <button th:onclick="location.href='/v1/home'">목록</button>
 
 <form th:if="${session.isLogin == true}" th:action="@{/v1/board/} + ${board.boardId} + @{/comment}" th:object="${comment}" th:method="post">
   <p>댓글 : <input type="text" th:field="*{cContent}"/></p>
-  <p><input type="submit" value="등록"/> <button type="reset">취소</button> </p>
-</form>
+  <p><input type="submit" value="등록"/> <button type="reset">취소</button></p>
+</form> -->
+
+
+<h2>게시글 상세 jQuery</h2>
+<table border="2">
+ <thead>상세 조회</thead>
+ <tbody>
+ <tr>
+   <th>제목</th>
+   <td><div th:id="bTitle"></div></td>
+ </tr>
+ <tr>
+   <th>내용</th>
+   <td><div th:id="bContent"></div></td>
+ </tr>
+ <tr>
+   <th>작성자</th>
+   <td><div th:id="bUserName"></div></td>
+ </tr>
+ <tr>
+   <th>작성일</th>
+   <td><div th:id="bCreateDate"></div></td>
+ </tr>
+ <tr>
+   <th>수정일</th>
+   <td><div th:id="bUpdateDate"></div></td>
+ </tr>
+ </tbody>
+</table>
+<button class="modifyBtn" th:onclick="|location.href='/v1/board/${boardId}/update'|">수정</button>
+<button th:onclick="deleteBoard()">삭제</button>
+
+<table border="1">
+	<thead>
+		<tr>
+			<th>...</th>
+			<th>댓글</th>
+			<th>작성일</th>
+			<th>수정일</th>
+			<th>작성자</th>
+		</tr>
+	</thead>
+	<tbody th:id="com"></tbody>
+</table>
+
+
+
+<button th:onclick="location.href='/v1/home'">목록</button>
+
+<script th:inline="javascript">
+const boardId = '[[${boardId}]]';
+		$.ajax({
+			url: "/v1/board/"+boardId,
+			type: "GET",
+			success: ((res1) => {
+	    		console.log(res1);
+				$('#boardId').text(res1.boardId)
+				$('#bTitle').text(res1.btitle)
+				$('#bContent').text(res1.bcontent)
+				$('#bUserName').text(res1.userName)
+				$('#bCreateDate').text(res1.createDate)
+				$('#bUpdateDate').text(res1.updateDate)
+				
+				/* '[[${session.userId}]]' != res1.userId && $('.modifyBtn').hide(); */
+				
+	    		$.ajax({
+	    			url: "/v1/board/"+boardId+"/comment",
+	    			type: 'GET',
+	    			dataType: 'json',
+	    			success: ((res2) => {
+	    				console.log(res2);
+	    				$.each(res2, function(index, com) {
+	    					var num = index+1;
+	    					const TIME_ZONE = 3240 * 10000;
+	    					var cd = new Date(com.createDate + TIME_ZONE).toISOString().split('T')[0];
+	    					var ud = new Date(com.updateDate + TIME_ZONE).toISOString().split('T')[0];
+	    					$('tbody#com').append(
+	    							'<tr><td>' + num
+	    							+'</td><td>' + this.cContent
+	    							+'</td><td>' + cd
+	    							+'</td><td>' + ud
+	    							+'</td><td>' + this.userName
+	    							+'</td></tr>')
+	    				});
+	    				
+	    				/* $.each(res2, function(index, com) {
+	    					$('#comment').append(index + " ")
+	    					$('#comment').append(com.ccontent + " ")
+	    					$('#comment').append(com.createDate + " ")
+	    					$('#comment').append(com.updateDate + " ")
+	    					$('#comment').append("작성자 : " + com.userName + "<br>")
+	    				}); */
+	    			}),
+	    			error: ((err2) => {
+	    				console.log(err2);
+	    			})
+				})
+			}),
+	        error: ((err1) => {
+	            console.log(err1);
+	        })
+		})
+		
+		function deleteBoard() {
+			$.ajax({
+				url: "/v1/board/"+boardId+"/delete",
+				type: 'POST',
+				data: boardId,
+				success: ((res3) => {
+					console.log(res3);
+					alert("삭제하였습니다.");
+					location.href='/v1/home'
+				}),
+				error: ((err3) => {
+					console.log(err3);
+					alert("삭제 할 수 없습니다");
+				})
+			})
+		} 
+</script>
 </body>
 </html>

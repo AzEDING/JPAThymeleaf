@@ -10,6 +10,8 @@ import com.setproject.domain.board.entity.dto.BoardUpdateDto;
 import com.setproject.domain.user.entity.User;
 import com.setproject.domain.user.entity.UserRepository;
 import com.setproject.domain.board.entity.dto.CommentReqDto;
+import com.setproject.domain.board.entity.dto.CommentResDto;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -50,10 +52,10 @@ public class BoardService {
 
 
 	@Transactional(readOnly = true)
-	public BoardDetailResDto getBoard(Long boardId) {
+	public BoardResDto getBoard(Long boardId) {
 		Board board = boardRepository.findByBoardIdAndIsdel(boardId, false).orElseThrow(ObjectNotFoundException::new);
-		List<Comment> comments = boardQueryRepository.getComments(boardId);
-		return BoardDetailResDto.builder()
+//		List<Comment> comments = boardQueryRepository.getComments(boardId);
+		return BoardResDto.builder()
 				.boardId(board.getBoardId())
 				.bTitle(board.getBTitle())
 				.bContent(board.getBContent())
@@ -61,7 +63,6 @@ public class BoardService {
 				.updateDate(board.getUpdateDate())
 				.userId(board.getUser().getUserId())
 				.userName(board.getUser().getName())
-				.comments(comments)
 				.build();
 	}
 
@@ -75,7 +76,7 @@ public class BoardService {
 		try {
 			Board board = boardRepository.findById(boardId).orElseThrow(ObjectNotFoundException::new);
 			board.updateBoard(dto);
-			response.sendRedirect("/v1/board/" + boardId);
+			response.sendRedirect("/v1/board/"+boardId+"/detail");
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
@@ -92,6 +93,12 @@ public class BoardService {
 		}
 	}
 	
+	@Transactional(readOnly = true)
+	public List<CommentResDto> getCommentList(Long boardId) {
+		return boardQueryRepository.getComments(boardId);
+		
+	}
+	
 	@Transactional
 	public void postComment(Long boardId, CommentReqDto commentReqDto, HttpServletRequest request, HttpServletResponse response) {
 		try {
@@ -100,7 +107,7 @@ public class BoardService {
 			Comment comment = Comment.builder().cContent(commentReqDto.getCContent()).board(board).isdel(false).build();
 			comment.setUser(user);
 			commentRepository.save(comment);
-			response.sendRedirect("");
+			response.sendRedirect("/v1/board/" + boardId + "/detail");
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}

@@ -1,15 +1,19 @@
 package com.setproject.domain.board;
 
 import com.setproject.domain.board.entity.dto.BoardReqDto;
+import com.setproject.domain.board.entity.dto.BoardResDto;
 import com.setproject.domain.board.entity.dto.BoardUpdateDto;
 import com.setproject.domain.board.entity.dto.CommentReqDto;
+import com.setproject.domain.board.entity.dto.CommentResDto;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -39,12 +43,13 @@ public class BoardController {
 		return modelAndView;
 	}
 
-	@GetMapping(value = "/board/{boardId}")
-	public ModelAndView getBoard(@PathVariable Long boardId) {
-		CommentReqDto commentReqDto = new CommentReqDto();
+	@GetMapping(value = "/board/{boardId}/detail")
+	public ModelAndView getBoardDetail(@PathVariable Long boardId) {
+//		CommentReqDto commentReqDto = new CommentReqDto();
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("board", boardService.getBoard(boardId));
-		modelAndView.addObject("comment", commentReqDto);
+		modelAndView.addObject("boardId", boardId);
+//		modelAndView.addObject("board", boardService.getBoard(boardId));
+//		modelAndView.addObject("comment", commentReqDto);
 		modelAndView.setViewName("getBoard");
 		return modelAndView;
 	}
@@ -54,10 +59,19 @@ public class BoardController {
 		BoardUpdateDto boardUpdateDto = new BoardUpdateDto();
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("board", boardService.getBoard(boardId));
-		modelAndView.addObject("boardId", boardId);
 		modelAndView.addObject("boardUpdateDto", boardUpdateDto);
 		modelAndView.setViewName("updateBoard");
 		return modelAndView;
+	}
+	
+	@GetMapping(value = "/board/{boardId}")
+	public BoardResDto getBoard(@PathVariable Long boardId) {
+		return boardService.getBoard(boardId);
+	}
+	
+	@GetMapping(value = "/board/{boardId}/comment")
+	public List<CommentResDto> getCommentList(@PathVariable Long boardId) {
+		return boardService.getCommentList(boardId);
 	}
 	
 	@PostMapping(value = "/board")

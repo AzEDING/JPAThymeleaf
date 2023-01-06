@@ -4,14 +4,47 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="text/html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="#">
+    <script src="https://code.jquery.com/jquery-3.6.2.js"></script>
     <title>Post Board Page</title>
 </head>
 <body>
 <h1>게시물 등록</h1>
-<form action="#" th:action="@{/v1/board}" th:object="${boardReqDto}" th:method="post">
-    <p>제목 : <input type="text" th:field="*{bTitle}"/></p>
-    <p>내용 : <input type="text" th:field="*{bContent}"/></p>
-    <p><input type="submit" value="등록"/> <button type="button" th:onclick="location.href='/v1'">BACK</button> </p>
-</form>
+    <form th:action="@{/v1/board}" th:object="${boardReqDto}" th:method="post">
+        <p>제목 : <input type="text" th:field="*{bTitle}"/></p>
+        <p>내용 : <input type="text" th:field="*{bContent}"/></p>
+        <p><input type="submit" value="등록"/> <button type="button" th:onclick="location.href='/v1/home'">뒤로</button> </p>
+    </form>
+    
+    <p>제목 : <input class="titleInput" type="text"></p>
+    <p>내용 : <input class="contentInput" type="text"></p>
+    <p><button type="button" onclick="postBoard()">등록1</button> <button type="button" th:onclick="location.href='/v1/home'">뒤로</button> </p>
+
+<script th:inline="javascript">
+    function postBoard() {
+    const title = $(".titleInput").val();
+    const content = $(".contentInput").val();
+
+    const boardReqDto = {
+        bTitle: title,
+        bContent: content
+    	};
+
+    $.ajax({
+        url:"/v1/board",
+        type:'POST',
+        data: boardReqDto,
+        success: ((res) => {
+    		location.href='/v1/home'
+    		
+        }),
+        error: ((err) => {
+            console.log(err);
+        })
+    })
+
+}
+
+</script>
 </body>
 </html>

@@ -3,12 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="text/html">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="#">
     <title>ERROR</title>
-</head>
+</head>	
 <body>
-<p th:text="${result.code}">code</p>
-<p th:text="${result.message}">message</p>
+<p th:if="${result.code} != null" th:text="${result.code}">code</p>
+<p th:if="${result.message} != null" th:text="${result.message}">message</p>
+<p th:if="${result.detail} != null" th:text="${result.detail}">detail</p>
 <button onclick="history.go(-1)">back</button>
 </body>
 </html>

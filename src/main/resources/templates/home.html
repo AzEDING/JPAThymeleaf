@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="text/html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="#">
     <title>HOME</title>
 </head>
 <body>
@@ -21,7 +22,7 @@
         </tr>
     </thead>
     <tbody>
-        <tr th:each="board : ${boardPage}" class="tr" th:onclick="|location.href='/v1/board/${board.boardId}'|">
+        <tr th:each="board : ${boardPage}" class="tr" th:onclick="|location.href='/v1/board/${board.boardId}/detail'|">
             <td th:text="${board.bTitle}" class="td"></td>
             <td th:text="${board.bContent}" class="td"></td>
             <td th:text="${board.createDate}" class="td"></td>
@@ -32,8 +33,5 @@
 </table>
 <button style="float: left" th:if="${session.isLogin == true}" th:onclick="location.href='/v1/board'">글쓰기</button>
 
-<nav style="text-align: center;">
-    <ul class="pagination" th:with="start=${(boardPage.number/maxPage)*maxPage + 1}, end=(${(boardPage.totalPages == 0) ? 1 : (start + (maxPage - 1) < boardPage.totalPages ? start + (maxPage - 1) : boardPage.totalPages)})"></ul>
-</nav>
 </body>
 </html>

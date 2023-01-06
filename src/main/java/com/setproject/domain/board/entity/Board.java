@@ -39,14 +39,14 @@ public class Board extends BaseDateEntity {
 	@Column(name = "board_id", columnDefinition = "BIGINT COMMENT '게시글 아이디'")
 	private Long boardId;
 
-	@Size(min = 2)
+	@Size(min = 2, message = "최소 2자 이상")
 	@Column(name = "b_title", nullable = false, columnDefinition = "NVARCHAR(50) COMMENT '게시글 제목'")
-	@NotBlank
+	@NotBlank(message = "제목을 입력해주세요 (2자 이상)")
 	private String bTitle;
 
-	@Size(min = 2)
+	@Size(min = 2, message = "최소 2자 이상")
 	@Column(name = "b_cotent", nullable = false, columnDefinition = "NVARCHAR(200) COMMENT '게시글 내용'")
-	@NotBlank
+	@NotBlank(message = "내용을 입력해주세요 (2자 이상)")
 	private String bContent;
 	
 	@ManyToOne

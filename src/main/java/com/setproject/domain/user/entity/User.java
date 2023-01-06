@@ -29,12 +29,12 @@ public class User extends BaseDateEntity {
 	private Long userId;
 
 	@Column(name = "email", nullable = false, columnDefinition = "NVARCHAR(30) COMMENT '사용자 이메일'")
-	@NotNull
+	@NotNull(message = "이메일을 입력해주세요")
 	private String email;
 	
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	@Column(name = "password", nullable = false, columnDefinition = "NVARCHAR(250) COMMENT '비밀번호'")
-	@NotNull
+	@NotNull(message = "비밀번호를 입력해주세요")
 	private String password;
 	
 	@Column(name = "name", columnDefinition = "NVARCHAR(30) COMMENT '이름'")
